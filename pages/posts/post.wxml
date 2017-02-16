@@ -1,1 +1,28 @@
-<text>post</text>
+<view>
+  <swiper indicator-dots="true" autoplay="true" interval="3000">
+    <swiper-item>
+      <image src="/images/wx.png"></image>
+      </swiper-item>
+     <swiper-item>
+      <image src="/images/vr.png"></image>
+      </swiper-item>
+       <swiper-item>
+      <image src="/images/iqiyi.png"></image>
+      </swiper-item>
+  </swiper>
+  <view>
+  <view>
+  <image src="/images/avatar/1.png"></image>
+  <text>Nov 25 2016</text>
+  </view>
+  <text>正是虾肥蟹壮时</text>
+  <image src="/images/post/crab.png"></image>
+  <text>分继续吹 不忍远离 当我看着你</text>
+  <view>
+  <image src="../../images/icon/chat.png"></image>
+  <text>92</text>
+  <image src="../../images/icon/view.png"></image>
+  <text>65</text>
+  </view>
+  </view>
+</view>
