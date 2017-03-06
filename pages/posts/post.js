@@ -2,13 +2,30 @@ var postsData = require('../../data/posts-data.js')
 
 Page({
     data: {
-    
+
     },
     onLoad: function (options) {
         // 生命周期函数--监听页面加载
         this.setData({posts_key:postsData.postList});
     },
-    
+
+    onPostTap:function(event){
+      var postId  = event.currentTarget.dataset.postid;
+      // console.log("current id is " + postId);
+      wx.navigateTo({
+        url: 'post-detail/post-detail?id=' + postId,
+        success: function(res){
+          // success
+        },
+        fail: function() {
+          // fail
+        },
+        complete: function() {
+          // complete
+        }
+      })
+    },
+
     onReady: function () {
         // 生命周期函数--监听页面初次渲染完成
         console.log("onReady");
