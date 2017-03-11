@@ -1,5 +1,5 @@
 var postsData = require('../../../data/posts-data.js')
-
+var app = getApp();
 Page({
 
     data: {
@@ -7,6 +7,7 @@ Page({
     },
 
     onLoad: function (options) {
+        var globalData = app.globalData;
         var postId = options.id;
         var postData = postsData.postList[postId];
         this.setData({ postData, postId });
@@ -26,6 +27,31 @@ Page({
             postsCollected[postId] = false;
             wx.setStorageSync('posts_collected', postsCollected);
         }
+
+        if (app.globalData.g_isPlayingMusic
+        && app.globalData.g_currentMusicPostId == postId) {
+            this.setData({
+                isPalyingMusic : true
+            })
+        }
+        this.setAudioMonitor();
+    },
+
+    setAudioMonitor: function () {
+        var that = this;
+        wx.onBackgroundAudioPlay(function () {
+            // callback
+            that.setData({
+                isPalyingMusic: true
+            })
+        });
+
+        wx.onBackgroundAudioPause(function () {
+            // callback
+            that.setData({
+                isPalyingMusic: false
+            })
+        })
     },
 
     onColletionTap: function (event) {
@@ -98,14 +124,18 @@ Page({
         var isPalyingMusic = this.data.isPalyingMusic;
         if (isPalyingMusic) {
             wx.pauseBackgroundAudio();
-            this.setData({ isPalyingMusic : false });
+            this.setData({ isPalyingMusic: false });
+            app.globalData.g_isPlayingMusic = false;
+            app.globalData.g_currentMusicPostId = that.data.currentPostId;
         } else {
             wx.playBackgroundAudio({
                 dataUrl: postData.music.url,
                 title: postData.music.title,
                 coverImgUrl: postData.music.coverImg
             });
-            this.setData({ isPalyingMusic : true });
+            this.setData({ isPalyingMusic: true });
+            app.globalData.g_isPlayingMusic = true;
+            app.globalData.g_currentMusicPostId = null;
         }
 
     }
