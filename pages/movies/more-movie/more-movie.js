@@ -28,11 +28,22 @@ Page({
         }
         this.data.requestUrl = dataUrl;
         util.http(dataUrl, this.processDoubanData)
+        wx.showNavigationBarLoading();
     },
 
-    onScrollLower:function(event){
+    onReachBottom:function(event){
         var nextUrl = this.data.requestUrl + "?start=" + this.data.totalCount + "&count=20";
         util.http(nextUrl, this.processDoubanData)
+        wx.showNavigationBarLoading();
+    },
+
+    onPullDownRefresh:function(event){
+        var refreshUrl = this.data.requestUrl + "?start=0&count=20";
+        this.data.movies = {};
+        this.data.isEmpty = true;
+        this.data.totalCount = 0;
+        util.http(refreshUrl,this.processDoubanData);
+        wx.showNavigationBarLoading();
     },
 
     processDoubanData: function(moviesDouban) {
@@ -53,6 +64,7 @@ Page({
             }
             movies.push(temp)
         }
+        // 合并请求数据，实现加载更多的效果。
         var totalMovies = {};
         if (!this.data.isEmpty) {
           totalMovies = this.data.movies.concat(movies);
@@ -64,6 +76,8 @@ Page({
           {movies: totalMovies}
         );
         this.data.totalCount += 20;
+        wx.hideNavigationBarLoading();
+        wx.stopPullDownRefresh();
     },
 
     onReady: function() {
