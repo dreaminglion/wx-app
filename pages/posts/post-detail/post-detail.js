@@ -29,9 +29,9 @@ Page({
         }
 
         if (app.globalData.g_isPlayingMusic
-        && app.globalData.g_currentMusicPostId == postId) {
+            && app.globalData.g_currentMusicPostId == postId) {
             this.setData({
-                isPalyingMusic : true
+                isPalyingMusic: true
             })
         }
         this.setAudioMonitor();
@@ -44,6 +44,8 @@ Page({
             that.setData({
                 isPalyingMusic: true
             })
+            app.globalData.g_isPlayingMusic = true;
+            app.globalData.g_currentMusicPostId = that.data.currentPostId;
         });
 
         wx.onBackgroundAudioPause(function () {
@@ -51,6 +53,17 @@ Page({
             that.setData({
                 isPalyingMusic: false
             })
+            app.globalData.g_isPlayingMusic = false;
+            app.globalData.g_currentMusicPostId = null;
+        });
+
+        wx.onBackgroundAudioStop(function () {
+            // callback
+            that.setData({
+                isPalyingMusic: false
+            })
+            app.globalData.g_isPlayingMusic = false;
+            app.globalData.g_currentMusicPostId = null;
         })
     },
 
